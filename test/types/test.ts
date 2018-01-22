@@ -51,3 +51,29 @@ import PluginError = require("plugin-error");
   }
 }
 
+{
+  const PLUGIN_NAME = 'test'
+
+  function createPluginError(err: Error | string) {
+    return new PluginError(PLUGIN_NAME, err);
+  }
+}
+
+{
+  // Inference with union type on second parameter
+  const PLUGIN_NAME = "test";
+
+  interface FooError extends Error {
+    foo: number;
+  }
+
+  function createPluginError(err: FooError | string) {
+    return new PluginError(PLUGIN_NAME, err);
+  }
+
+  const fooError: FooError = Object.assign(new Error("something broke"), {foo: 1});
+  const pluginError = createPluginError(fooError);
+  if (pluginError.foo !== undefined) {
+    const foo: number = pluginError.foo;
+  }
+}

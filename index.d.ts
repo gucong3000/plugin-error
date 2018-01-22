@@ -21,6 +21,13 @@ declare namespace PluginError {
 
     /**
      * @param plugin Plugin name
+     * @param error Base error / Error message
+     * @param options Error options
+     */
+    new <E extends Error>(plugin: string, error: E | string, options?: Options): PluginError<E | {[K in keyof E]: undefined}>;
+
+    /**
+     * @param plugin Plugin name
      * @param options Options with message
      */
     new(plugin: string, options: Options & {message: string}): PluginError;
