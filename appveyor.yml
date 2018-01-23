@@ -4,11 +4,12 @@
 environment:
   matrix:
     # node.js
-    - nodejs_version: "0.10"
-    - nodejs_version: "0.12"
-    - nodejs_version: "4"
-    - nodejs_version: "6"
+    - nodejs_version: "stable"
     - nodejs_version: "8"
+    - nodejs_version: "6"
+    - nodejs_version: "4"
+    - nodejs_version: "0.12"
+    - nodejs_version: "0.10"
 
 install:
   - ps: Install-Product node $env:nodejs_version
@@ -17,7 +18,7 @@ install:
 test_script:
   - node --version
   - npm --version
-  - cmd: npm test
+  - if "%nodejs_version%"=="stable" (npm test) else (node_modules\.bin\mocha --async-only && npm run test-types)
 
 build: off
 
